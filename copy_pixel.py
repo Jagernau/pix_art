@@ -29,6 +29,8 @@ class GridingPic:
     """
     A class for splitting an image into smaller square pieces and calculating their average color.
     """
+    base_dir = os.path.dirname(os.path.abspath(__file__))
+
     def __init__(self, grid_size: int, file_name: str = None, in_dir_pic: str = "in_pic/", out_dir_pic: str = "out_pic/") -> None:
         """
         Initializes an instance of the GridingPic class.
@@ -43,8 +45,8 @@ class GridingPic:
         self.file_name = file_name
         self.converted = self.__convert_image()
 
-    def __get_last_file(self, directory: str) ->str:
-            last_file = max(glob.iglob(os.path.join(os.path.dirname(os.path.abspath(__file__)), directory, "*")), key=os.path.getctime)
+    def get_last_file(self, directory: str) ->str:
+            last_file = max(glob.iglob(os.path.join(self.base_dir, directory, "*")), key=os.path.getctime)
             return last_file
 
 
@@ -56,10 +58,10 @@ class GridingPic:
             np.ndarray: The image as a NumPy array.
         """
         if self.file_name is not None:
-            filepath = os.path.join(os.path.dirname(os.path.abspath(__file__)), self.in_dir_pic, self.file_name)
+            filepath = os.path.join(self.base_dir, self.in_dir_pic, self.file_name)
         else:
-            latest_file = self.__get_last_file(self.in_dir_pic)
-            filepath = os.path.join(os.path.dirname(os.path.abspath(__file__)), self.in_dir_pic, latest_file)
+            latest_file = self.get_last_file(self.in_dir_pic)
+            filepath = os.path.join(self.base_dir, self.in_dir_pic, latest_file)
 
         return cv.imread(filepath)
 
@@ -110,15 +112,21 @@ class GridingPic:
         return self.__sum_rgb(one_square)
 
 
-    def save_grided_pic(self) -> None:
+    def save_grided_pic(self, file_name = None) -> None:
         """
         Saves the gridded image to a file.
 
         Args:
             file_name (str): The name of the file to save the gridded image to.
         """
-        cv.imwrite(name_file, self.grid_pic_in_little_pics())
+        if file_name is not None:
+            filepath = os.path.join(self.base_dir, self.out_dir_pic, file_name)
+        else:
+            latest_file = self.get_last_file(self.in_dir_pic).split("/")[-1]
+            filepath = os.path.join(self.base_dir, self.out_dir_pic, latest_file)
+
+        cv.imwrite(filepath, self.grid_pic_in_little_pics())
 
 
 pix_art = GridingPic(10)
-pix_art.save_grided_pic("fuck.png")
+pix_art.save_grided_pic()
