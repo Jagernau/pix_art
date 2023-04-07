@@ -8,7 +8,6 @@ in_dir = "in_pic/"
 out_dir = "out_pic/"
 
 
-
 def check_directories(in_dir, out_dir):
     """
     Проверяет наличие директорий "in_pic" и "out_pic"
@@ -29,6 +28,7 @@ class GridingPic:
     """
     A class for splitting an image into smaller square pieces and calculating their average color.
     """
+
     base_dir = os.path.dirname(os.path.abspath(__file__))
 
     def __init__(self, grid_size: int, file_name: str = None, in_dir_pic: str = "in_pic/", out_dir_pic: str = "out_pic/") -> None:
