@@ -11,10 +11,9 @@ in_directory = os.path.join(base_dir, input_dir)
 out_directory = os.path.join(base_dir, output_dir)
 
 
-
 # Usage example
 @click.command()
-@click.option("-g", "--grid_size", "grid_size", type=int, help="size of crushing squares image")
+@click.option("-g", "--grid_size", "grid_size", default=10, type=int, help="size of split squares image")
 @click.option("-f", "--file_name", "file_name", default=None, type=str, help="the name of the file to be converted")
 @click.option("-i", "--input_dir", "input_pic_dir", default=in_directory, type=str, help='the directory from which images will be converted is located in the root folder by default "in_pic/"')
 @click.option("-o", "--output_dir", "output_pic_dir", default=out_directory, type=str, help='the directory from which images will be converted is located in the root folder by default "out_pic/"')
